@@ -13,6 +13,23 @@ ATankPlayerController::~ATankPlayerController()
 
 }
 
+void ATankPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
+
+	// Log out Possesed Tank
+	ATank* PossesedTank = GetControlledTank();
+	if (!PossesedTank)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController not possesing a Tank"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Possesed Tank: %s"), *PossesedTank->GetName());
+	}
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());

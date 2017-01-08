@@ -18,6 +18,8 @@ public:
 	ATankPlayerController();
 	~ATankPlayerController();
 
+	virtual void BeginPlay() override;
+
 	ATank* GetControlledTank() const;
 	
 	
