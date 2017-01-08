@@ -16,7 +16,6 @@ ATankPlayerController::~ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
 
 	// Log out Possesed Tank
 	ATank* PossesedTank = GetControlledTank();
@@ -26,7 +25,7 @@ void ATankPlayerController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Possesed Tank: %s"), *PossesedTank->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController Possesed Tank: %s"), *PossesedTank->GetName());
 	}
 }
 
