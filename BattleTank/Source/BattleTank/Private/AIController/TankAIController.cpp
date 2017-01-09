@@ -14,7 +14,6 @@ ATankAIController::~ATankAIController()
 
 }
 
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();

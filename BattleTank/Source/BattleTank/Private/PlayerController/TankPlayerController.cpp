@@ -5,7 +5,7 @@
 
 ATankPlayerController::ATankPlayerController()
 {
-
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 ATankPlayerController::~ATankPlayerController()
@@ -17,7 +17,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Log out Possesed Tank
+	// Log out Possessed Tank
 	ATank* PossesedTank = GetControlledTank();
 	if (!PossesedTank)
 	{
@@ -29,7 +29,25 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	AimTowardsCrossHair();
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
+}
+
+void ATankPlayerController::AimTowardsCrossHair()
+{
+	if (!GetControlledTank())
+	{
+		return;
+	}
+
+	// Get world location through crosshair
+	// If it hits the landscape 
+		// Tell controlled tank to aim at this point
 }
