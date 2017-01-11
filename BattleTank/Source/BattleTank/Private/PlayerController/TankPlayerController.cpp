@@ -68,14 +68,9 @@ bool ATankPlayerController::GetSightRayHitLocation( FVector& HitLocation ) const
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		// Line-trace along that look direction, and see what we hit (up to max range)
-		FHitResult RV_Hit(ForceInit);
-		if (GetLookVectorHitLocation(RV_Hit, ScreenLocation, LookDirection))
-		{
-			HitLocation = RV_Hit.Location;
-			return true;
-		}
+		GetLookVectorHitLocation(LookDirection, HitLocation);
 	}
-	return false;
+	return true;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
@@ -89,22 +84,22 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 		);
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FHitResult &RV_Hit, FVector2D& ScreenLocation, FVector& Direction) const
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
 {
-	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, GetControlledTank());
-	RV_TraceParams.bTraceComplex = true;
-	RV_TraceParams.bTraceAsyncScene = false;
-	RV_TraceParams.bReturnPhysicalMaterial = false;
+	FHitResult HitResult;
+	FVector StartLocation = PlayerCameraManager->GetCameraLocation();
+	FVector EndLocation = StartLocation + (LookDirection * LineTraceRange);
 
-	UCameraComponent* CameraComponent = Cast<UCameraComponent>(GetControlledTank()->GetComponentByClass(UCameraComponent::StaticClass()));
-	FVector Start(ScreenLocation.X, ScreenLocation.Y, CameraComponent->GetComponentLocation().Z);
-	FVector End = Start + (Direction * LineTraceRange);
-
-	return GetWorld()->LineTraceSingleByChannel(
-		RV_Hit,			//result
-		Start,			//start
-		End,			//end
-		ECC_Visibility, //collision channel
-		RV_TraceParams
-		);
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility
+		))
+	{
+		HitLocation = HitResult.Location;
+		return true;
+	}
+	HitLocation = FVector(ForceInitToZero);
+	return false;
 }
