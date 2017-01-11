@@ -62,40 +62,43 @@ bool ATankPlayerController::GetSightRayHitLocation( FVector& HitLocation ) const
 	int ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
-	UE_LOG(LogTemp, Warning, TEXT("ScreenLocation: %s"), *ScreenLocation.ToString());
 
 	// "De-project" the screen position of the crosshair to a world direction
-	// Line-trace along that look direction, and see what we hit (up to max range)
-
-	return true;
-
-	/*FHitResult RV_Hit(ForceInit);
-	SingleLineTrace(RV_Hit);
-
-	if (RV_Hit.bBlockingHit)
+	FVector LookDirection(ForceInitToZero);
+	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("bBlockingHit: %s"), *RV_Hit.GetActor()->GetName());
-		HitLocation = RV_Hit.Location;
-		return true;
+		// Line-trace along that look direction, and see what we hit (up to max range)
+		FHitResult RV_Hit(ForceInit);
+		if (GetLookVectorHitLocation(RV_Hit, ScreenLocation, LookDirection))
+		{
+			HitLocation = RV_Hit.Location;
+			return true;
+		}
 	}
-	return false;*/
+	return false;
 }
 
-bool ATankPlayerController::SingleLineTrace(FHitResult &RV_Hit) const
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
-	return true;
+	FVector CameraWorldlocation(ForceInitToZero);	// To be discarded
+	return DeprojectScreenPositionToWorld(
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		CameraWorldlocation,
+		LookDirection
+		);
+}
 
-	/*FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
+bool ATankPlayerController::GetLookVectorHitLocation(FHitResult &RV_Hit, FVector2D& ScreenLocation, FVector& Direction) const
+{
+	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, GetControlledTank());
 	RV_TraceParams.bTraceComplex = true;
-	RV_TraceParams.bTraceAsyncScene = true;
+	RV_TraceParams.bTraceAsyncScene = false;
 	RV_TraceParams.bReturnPhysicalMaterial = false;
 
-
 	UCameraComponent* CameraComponent = Cast<UCameraComponent>(GetControlledTank()->GetComponentByClass(UCameraComponent::StaticClass()));
-	//FVector Start = CameraComponent->GetComponentLocation() + CameraComponent->Bounds
-
-	FVector Start = CameraComponent->GetComponentLocation();
-	FVector End = Start + (FVector::ForwardVector * 10000);
+	FVector Start(ScreenLocation.X, ScreenLocation.Y, CameraComponent->GetComponentLocation().Z);
+	FVector End = Start + (Direction * LineTraceRange);
 
 	return GetWorld()->LineTraceSingleByChannel(
 		RV_Hit,			//result
@@ -104,5 +107,4 @@ bool ATankPlayerController::SingleLineTrace(FHitResult &RV_Hit) const
 		ECC_Visibility, //collision channel
 		RV_TraceParams
 		);
-		*/
 }

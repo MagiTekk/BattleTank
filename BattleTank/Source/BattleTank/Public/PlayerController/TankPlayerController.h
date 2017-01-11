@@ -32,12 +32,16 @@ private:
 	UPROPERTY(EditAnywhere, Category = "UI")
 		float CrossHairYLocation = 0.33333f;
 
+	UPROPERTY(EditAnywhere, Category = "LineTraceSingleByChannel")
+		float LineTraceRange = 10000.0f;	// 10 km
+
 	// Start the tank moving the barrel so that a shot would hit the target intersecting with the cross hair
 	void AimTowardsCrossHair();
 
 	// Return an OUT parameter, true if hit the landscape
 	bool GetSightRayHitLocation(FVector& HitLocation) const;
 
-	bool SingleLineTrace(FHitResult &RV_Hit) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
 
+	bool GetLookVectorHitLocation(FHitResult &RV_Hit, FVector2D& Start, FVector& Direction) const;
 };
