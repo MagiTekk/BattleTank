@@ -5,4 +5,4 @@ An open world, head to head tank fight game with simple AI and advanced control 
 * Bullet List
 
 ---
-[Link](http://sonderblohm.net/)
+[PersonalSite](http://sonderblohm.net/)
