@@ -17,16 +17,22 @@ ATankAIController::~ATankAIController()
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	// Aim at Player Tank
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
 	ATank* PlayerTank = GetPlayerTank();
-	if (!PlayerTank)
+	if (PlayerTank)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerTank not not found"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Aiming at PlayerTank: %s"), *PlayerTank->GetName());
+		// TODO move towards the player
+
+		// Aim towards the player
+		FVector HitLocation = PlayerTank->GetActorLocation();
+		GetControlledTank()->AimAt(HitLocation);
+
+		// Fire if ready
 	}
 }
 

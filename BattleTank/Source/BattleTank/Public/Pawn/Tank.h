@@ -13,15 +13,19 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
+	virtual ~ATank();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
 
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
+
+	void AimAt(FVector Hitlocation);
+
+protected:
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponentParam) override;
 
 	
 	
