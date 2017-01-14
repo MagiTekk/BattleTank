@@ -8,11 +8,6 @@ ATankPlayerController::ATankPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-ATankPlayerController::~ATankPlayerController()
-{
-
-}
-
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();

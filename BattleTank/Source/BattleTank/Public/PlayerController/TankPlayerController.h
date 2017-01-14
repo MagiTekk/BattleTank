@@ -17,7 +17,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 public:
 
 	ATankPlayerController();
-	virtual ~ATankPlayerController();
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
