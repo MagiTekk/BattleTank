@@ -34,7 +34,7 @@ void ATank::Tick( float DeltaTime )
 
 void ATank::AimAt(FVector& Hitlocation)
 {
-	TankAimingComponent->AimAt(Hitlocation);
+	TankAimingComponent->AimAt(Hitlocation, LaunchSpeed);
 }
 
 // Called to bind functionality to input
