@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "Pawn/Tank.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
+
+class ATank;
 
 /**
  * 
