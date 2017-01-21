@@ -15,12 +15,12 @@ public:
 	// Sets default values for this component's properties
 	UTankTurret();
 
-	void RotateTurret(float RelativeSpeed);
+	void Rotate(float RelativeSpeed);
 
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
-		float MaxDegreesPerSecond = 5.f;
+		float MaxDegreesPerSecond = 25.f;
 		
 	
 };

@@ -12,13 +12,13 @@ UTankTurret::UTankTurret()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankTurret::RotateTurret(float RelativeSpeed)
+void UTankTurret::Rotate(float RelativeSpeed)
 {
 	RelativeSpeed = FMath::Clamp<float>(RelativeSpeed, -1.f, 1.f);
-	auto AzimuthChange = RelativeSpeed * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
-	auto RawNewAzimuth = RelativeRotation.Yaw + AzimuthChange;
+	auto RotationChange = RelativeSpeed * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
+	auto RawNewRotation = RelativeRotation.Yaw + RotationChange;
 
-	SetRelativeRotation(FRotator(0, RawNewAzimuth, 0));
+	SetRelativeRotation(FRotator(0, RawNewRotation, 0));
 	
 }
 
