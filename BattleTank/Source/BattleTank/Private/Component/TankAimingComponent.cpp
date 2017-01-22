@@ -40,7 +40,6 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent::AimAt"));
 	if (!Barrel) { return; }
 	if (!Turret) { return; }
 
@@ -57,6 +56,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveTurretTowards(AimDirection);
 
 		auto Time = GetWorld()->GetTimeSeconds();
+		
 		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, HitLocation %s"), Time, *HitLocation.ToString());
 	}
 	else
