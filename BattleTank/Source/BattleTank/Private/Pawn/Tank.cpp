@@ -29,13 +29,17 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	if (!Barrel) { return; }
+	// FPlatformTime: more precise world time
+	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
+	if (Barrel && isReloaded)
+	{
+		// Spawn a projectile from the barrel socket of the component
+		const UStaticMeshSocket* Projectile_Socket = Barrel->GetSocketByName(FName("Projectile"));
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint->GetOwnerClass(), Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
 
-	// Spawn a projectile from the barrel socket of the component
-	const UStaticMeshSocket* Projectile_Socket = Barrel->GetSocketByName(FName("Projectile"));
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint->GetOwnerClass(), Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
-
-	Projectile->LaunchProjectile(LaunchSpeed);
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
 }
 
 // Called when the game starts or when spawned
@@ -45,7 +49,7 @@ void ATank::BeginPlay()
 	
 }
 
-void ATank::AimAt(FVector& Hitlocation)
+void ATank::AimAt(FVector Hitlocation)
 {
 	TankAimingComponent->AimAt(Hitlocation, LaunchSpeed);
 }

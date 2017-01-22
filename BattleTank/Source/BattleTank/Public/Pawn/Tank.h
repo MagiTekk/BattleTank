@@ -31,7 +31,7 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void AimAt(FVector& Hitlocation);
+	void AimAt(FVector Hitlocation);
 
 protected:
 
@@ -50,5 +50,8 @@ private:
 
 	// Local Barrel reference for spawning projectile
 	UTankBarrel* Barrel = nullptr;
+
+	float ReloadTimeInSeconds = 3;
+	double LastFireTime = 0;
 	
 };
