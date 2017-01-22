@@ -35,8 +35,8 @@ void ATank::Fire()
 
 	// Spawn a projectile from the barrel socket of the component
 	const UStaticMeshSocket* Projectile_Socket = Barrel->GetSocketByName(FName("Projectile"));
-	// TODO: find the appropiate world position to spawn our projectile
-	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint->GetOwnerClass(), Projectile_Socket->RelativeLocation, Projectile_Socket->RelativeRotation);
+	
+	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint->GetOwnerClass(), Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
 }
 
 // Called when the game starts or when spawned
