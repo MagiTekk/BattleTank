@@ -26,13 +26,13 @@ public:
 
 private:
 
-	UPROPERTY(EditAnywhere, Category = "UI")
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		float CrossHairXLocation = 0.5f;
 
-	UPROPERTY(EditAnywhere, Category = "UI")
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		float CrossHairYLocation = 0.33333f;
 
-	UPROPERTY(EditAnywhere, Category = "LineTraceSingleByChannel")
+	UPROPERTY(EditDefaultsOnly, Category = "LineTraceSingleByChannel")
 		int LineTraceRange = 1000000;	// 10 km -> 1000000 cm
 
 	// Start the tank moving the barrel so that a shot would hit the target intersecting with the cross hair

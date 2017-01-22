@@ -40,6 +40,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
+	UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent::AimAt"));
 	if (!Barrel) { return; }
 	if (!Turret) { return; }
 

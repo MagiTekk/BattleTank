@@ -29,7 +29,7 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	// FPlatformTime: more precise world time
+	// FPlatformTime: more precise world time (but still since we don't know how it works we should maybe keep to GetWorld()->GetTimeSeconds() instead
 	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
 	if (Barrel && isReloaded)
 	{
