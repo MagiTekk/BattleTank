@@ -53,12 +53,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveTurretTowards(AimDirection);
 
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, HitLocation %s"), Time, *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, HitLocation %s"), Time, *HitLocation.ToString());
 	}
 	else
 	{
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found, HitLocation %s"), Time, *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found, HitLocation %s"), Time, *HitLocation.ToString());
 	}
 }
 
