@@ -21,6 +21,8 @@ public:
 	
 	// Max force per track, in Newtons (Force (Newtons) = Mass (Kg) x Acceleration (m/s^2)
 	UPROPERTY(EditDefaultsOnly, Category = Movement)
-		float TrackMaxDrivingForce = 400000; // (40000 x 2.7) (calculated using WolframAlpha: https://goo.gl/pSZfkf) -> used 10m/s^2 instead
+		// (40000 x 2.7) (calculated using WolframAlpha: https://goo.gl/pSZfkf) -> used 10m/s^2 instead
+		// However since the tank is massive and the friction is high we use a different value
+		float TrackMaxDrivingForce = 30000000; 
 	
 };
