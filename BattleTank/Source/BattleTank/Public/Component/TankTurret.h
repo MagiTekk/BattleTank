@@ -5,7 +5,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTurret.generated.h"
 
-
+/**
+* TankTurret is just the class used to move around the barrel and Aim at the world
+*/
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), hidecategories=("Collision") )
 class BATTLETANK_API UTankTurret : public UStaticMeshComponent
 {
