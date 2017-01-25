@@ -21,7 +21,10 @@ void ATankAIController::Tick(float DeltaTime)
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if (PlayerTank)
 	{
-		// TODO move towards the player
+		// TODO: check radius is in cm
+		// Move actor does some path-finding logic and then calls RequestDirectMove on the UNavMovementComponent
+		MoveToActor(PlayerTank, AcceptancRadius);
+
 		auto ControlledTank = Cast<ATank>(GetPawn());
 
 		// Aim towards the player

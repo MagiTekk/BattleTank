@@ -14,7 +14,9 @@ void UTankTrack::SetThrottle(float Throttle)
 	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 
-	// Apply the force to the Tank itself
+	// Apply the force to the Tank itself, We chose the cast the USceneComponent to UPrimitiveComponent
+	// because it is the first class under USceneComponent that allows me to add a force
+	// I want to use the simplest class possible
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
