@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Component")
 		UTankAimingComponent* GetTankAimingComponent() const;
 
+
+	virtual void BeginPlay() override;
+
 protected:
 
 	// Called to bind functionality to input
