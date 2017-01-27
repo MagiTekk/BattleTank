@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "Pawn/Tank.h"
+#include "Component/TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 ATankPlayerController::ATankPlayerController()
@@ -12,6 +13,17 @@ ATankPlayerController::ATankPlayerController()
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto AutoComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AutoComponent)
+	{
+		FoundAimingComponent(AutoComponent);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController cannot find AimingComponent at BeginPlay"));
+	}
+	
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
