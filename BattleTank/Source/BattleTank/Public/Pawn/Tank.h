@@ -39,6 +39,7 @@ protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponentParam) override;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Component")
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
