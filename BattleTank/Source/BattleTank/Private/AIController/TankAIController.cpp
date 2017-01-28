@@ -4,11 +4,6 @@
 #include "Pawn/Tank.h"
 #include "TankAIController.h"
 
-ATankAIController::ATankAIController()
-{
-
-}
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();

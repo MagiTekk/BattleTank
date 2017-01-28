@@ -16,7 +16,7 @@ ATank::ATank()
 void ATank::AimAt(FVector Hitlocation)
 {
 	auto TankAimingComponent = GetTankAimingComponent();
-	if (TankAimingComponent)
+	if (ensure(TankAimingComponent))
 	{
 		TankAimingComponent->AimAt(Hitlocation);
 	}
@@ -25,7 +25,7 @@ void ATank::AimAt(FVector Hitlocation)
 void ATank::Fire()
 {
 	auto TankAimingComponent = GetTankAimingComponent();
-	if (TankAimingComponent)
+	if (ensure(TankAimingComponent))
 	{
 		TankAimingComponent->Fire();
 	}

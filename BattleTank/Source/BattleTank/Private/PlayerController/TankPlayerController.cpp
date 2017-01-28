@@ -15,15 +15,8 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	auto AutoComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (AutoComponent)
-	{
-		FoundAimingComponent(AutoComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController cannot find AimingComponent at BeginPlay"));
-	}
-	
+	if (!ensure(AutoComponent)) { return; }
+	FoundAimingComponent(AutoComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
@@ -39,10 +32,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank())
-	{
-		return;
-	}
+	if (!ensure(GetControlledTank())) {return;}
 	
 	FVector HitLocation(0);
 	if (GetSightRayHitLocation(HitLocation))
