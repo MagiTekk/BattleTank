@@ -52,7 +52,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel)) { return; }
+	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
 
 	// FPlatformTime: more precise world time (but still since we don't know how it works we should maybe keep to GetWorld()->GetTimeSeconds() instead
 	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
