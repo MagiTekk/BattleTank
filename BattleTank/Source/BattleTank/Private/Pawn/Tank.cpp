@@ -1,7 +1,6 @@
 // Copyright TempleGames GmbH
 
 #include "BattleTank.h"
-#include "Component/TankAimingComponent.h"
 #include "Tank.h"
 
 // Sets default values
@@ -13,39 +12,9 @@ ATank::ATank()
 	UE_LOG(LogTemp, Warning, TEXT("[%s] 4b1167a1: TankC++_Construction"), *GetName());
 }
 
-void ATank::AimAt(FVector Hitlocation)
-{
-	auto TankAimingComponent = GetTankAimingComponent();
-	if (ensure(TankAimingComponent))
-	{
-		TankAimingComponent->AimAt(Hitlocation);
-	}
-}
-
-void ATank::Fire()
-{
-	auto TankAimingComponent = GetTankAimingComponent();
-	if (ensure(TankAimingComponent))
-	{
-		TankAimingComponent->Fire();
-	}
-}
-
-UTankAimingComponent* ATank::GetTankAimingComponent() const
-{
-	return Cast<UTankAimingComponent>(GetComponentByClass(UTankAimingComponent::StaticClass()));
-}
-
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("[%s] 4b1167a1: TankC++_BeginPlay"), *GetName());
-}
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* InputComponentParam)
-{
-	Super::SetupPlayerInputComponent(InputComponentParam);
-
 }
 
