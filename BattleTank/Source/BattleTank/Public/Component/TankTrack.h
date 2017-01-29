@@ -17,6 +17,8 @@ public:
 
 	UTankTrack();
 
+	virtual void BeginPlay() override;
+
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	
 	// Sets a Throttle between -1 and +1
@@ -28,4 +30,9 @@ public:
 		// (40000 x 2.7) (calculated using WolframAlpha: https://goo.gl/pSZfkf) -> used 10m/s^2 instead
 		// However since the tank is massive and the friction is high we use a different value
 		float TrackMaxDrivingForce = 30000000;
+
+private:
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };
