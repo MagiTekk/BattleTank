@@ -24,11 +24,18 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringStatus = EFiringStatus::Reloading;
 	}
-	// TODO handle aiming and log states
+	else if (IsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Locked;
+	}
 }
 
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -44,24 +51,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
-	//UE_LOG(LogTemp, Warning, TEXT("UTankAimingComponent::AimAt"));
-
 	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, StartLocation, HitLocation, LaunchSpeed, false, 0.f, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("ATank::AimAt"));
-		FVector AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrelTowards(AimDirection);
-		MoveTurretTowards(AimDirection);
-
-		auto Time = GetWorld()->GetTimeSeconds();
-		
-		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found, HitLocation %s"), Time, *HitLocation.ToString());
-	}
-	else
-	{
-		auto Time = GetWorld()->GetTimeSeconds();
-		//UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found, HitLocation %s"), Time, *HitLocation.ToString());
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards();
+		MoveTurretTowards();
 	}
 }
 
@@ -82,8 +76,20 @@ void UTankAimingComponent::Fire()
 	}
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+bool UTankAimingComponent::IsBarrelMoving()
 {
+	if (!ensure(Barrel)) { return false; }
+
+	// Never compare two float values, in this case use FVector::Equals()
+	// We are comparing the Barrel Forward Vector with the Normal of the AimDirection
+	auto BarrelForward = Barrel->GetForwardVector();
+	return !BarrelForward.Equals(AimDirection, 0.01f);
+}
+
+void UTankAimingComponent::MoveBarrelTowards()
+{
+	if (!ensure(Barrel)) { return; }
+
 	// Work out difference between current barrel rotation and AimDirection
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
@@ -92,9 +98,10 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+void UTankAimingComponent::MoveTurretTowards()
 {
 	if (!ensure(Barrel && Turret)) { return; }
+
 	// Work out difference between current barrel rotation and AimDirection
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
