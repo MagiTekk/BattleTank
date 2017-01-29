@@ -23,6 +23,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		// (40000 x 2.7) (calculated using WolframAlpha: https://goo.gl/pSZfkf) -> used 10m/s^2 instead
 		// However since the tank is massive and the friction is high we use a different value
-		float TrackMaxDrivingForce = 30000000; 
+		float TrackMaxDrivingForce = 30000000;
 	
 };
