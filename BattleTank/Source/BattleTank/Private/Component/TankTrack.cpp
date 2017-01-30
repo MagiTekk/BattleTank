@@ -6,7 +6,7 @@
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UTankTrack::BeginPlay()
@@ -15,10 +15,8 @@ void UTankTrack::BeginPlay()
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTrack::ApplySidewaysForce()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 	auto TankVelocity = GetOwner()->GetVelocity();
 	auto TankRightDirection = GetOwner()->GetActorRightVector();
 
@@ -26,7 +24,8 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 	auto SlippageSpeed = FVector::DotProduct(TankVelocity, TankRightDirection);
 
 	// Work-out the required acceleration this frame to correct
-	auto CorrectionAcceleration = - (SlippageSpeed / DeltaTime * TankRightDirection);
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
+	auto CorrectionAcceleration = -(SlippageSpeed / DeltaTime * TankRightDirection);
 
 	// Calculate and apply sideways for (F = m * a)
 	auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
@@ -36,9 +35,12 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	FMath::Clamp<float>(Throttle, -1.0f, 1.0f);
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
+}
 
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+void UTankTrack::DriveTrack()
+{
+	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 
 	// Apply the force to the Tank itself, We chose the cast the USceneComponent to UPrimitiveComponent
@@ -48,7 +50,12 @@ void UTankTrack::SetThrottle(float Throttle)
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
 
+// OnHit gets called every frame, with this we are making sure the tanks can only move when they are touching the ground
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s Touching the ground!"), *GetName());
+	DriveTrack();
+	ApplySidewaysForce();
+
+	// Reset the throttle to avoid neverending movement
+	CurrentThrottle = 0;
 }
