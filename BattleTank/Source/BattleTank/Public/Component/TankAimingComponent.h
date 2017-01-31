@@ -11,7 +11,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 class UTankBarrel;
@@ -40,12 +41,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 		void Fire();
 
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int GetAmmo() const;
+
 	EFiringStatus GetFiringStatus() const;
 
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Reloading")
 		EFiringStatus FiringStatus = EFiringStatus::Reloading;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ammo")
+		int Ammo = 5;
 
 private:
 	UTankBarrel* Barrel = nullptr;
