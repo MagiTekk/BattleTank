@@ -40,6 +40,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 		void Fire();
 
+	EFiringStatus GetFiringStatus() const;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Reloading")

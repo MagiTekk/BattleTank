@@ -19,8 +19,9 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
-private:
+protected:
 
 	// How close can the AI tank get, in cm
-	float AcceptancRadius = 3000;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float AcceptancRadius = 8000;
 };
