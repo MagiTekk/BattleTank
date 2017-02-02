@@ -1,7 +1,6 @@
 # Visual Studio 2015 user specific files
 .vs/
 *.VC.db
-Content/StarterContent/
 
 # Compiled Object files
 *.slo
