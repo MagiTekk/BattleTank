@@ -36,7 +36,7 @@ private:
 		float CrossHairYLocation = 0.33333f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "LineTraceSingleByChannel")
-		int LineTraceRange = 1000000;	// 10 km -> 1000000 cm
+		int32 LineTraceRange = 1000000;	// 10 km -> 1000000 cm
 
 	// Start the tank moving the barrel so that a shot would hit the target intersecting with the cross hair
 	void AimTowardsCrossHair();
