@@ -16,7 +16,6 @@ AProjectile::AProjectile()
 	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
 	SetRootComponent(CollisionMesh);
 	CollisionMesh->SetNotifyRigidBodyCollision(true);	// Simulation generates hit events defaulted to true
-	CollisionMesh->SetVisibility(false);
 	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
@@ -28,6 +27,9 @@ AProjectile::AProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement Component"));
 	ProjectileMovement->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -47,5 +49,8 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate(true);
+	ExplosionForce->FireImpulse();
+	
+	//Cast<UStaticMeshComponent>(OtherActor->GetRootComponent())->AddRadialImpulse(Hit.Location, ExplosionForce->Radius, ExplosionForce->ImpulseStrength, ExplosionForce->Falloff);
 }
 
