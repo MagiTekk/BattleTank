@@ -17,6 +17,7 @@ AProjectile::AProjectile()
 	SetRootComponent(CollisionMesh);
 	CollisionMesh->SetNotifyRigidBodyCollision(true);	// Simulation generates hit events defaulted to true
 	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	CollisionMesh->SetVisibility(false);
 
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
 	LaunchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -57,6 +58,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	// Remove the static mesh
 	CollisionMesh->DestroyComponent();
 
+	// Apply damage
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius,
+		UDamageType::StaticClass(),
+		TArray<AActor*>() // Empty array, damage all actors
+		);
+
+	// Destroy timer
 	FTimerHandle MyTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(MyTimerHandle, this, &AProjectile::OnTimerFinished, TimeToDieInSecs);
 }

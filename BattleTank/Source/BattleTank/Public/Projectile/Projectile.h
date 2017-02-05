@@ -29,6 +29,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		float TimeToDieInSecs = 10.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float ProjectileDamage = 18.0f; // TODO set sensible value
+
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
