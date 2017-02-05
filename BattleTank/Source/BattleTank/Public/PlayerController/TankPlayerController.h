@@ -22,6 +22,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
@@ -47,4 +49,7 @@ private:
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+	UFUNCTION(Category = "Observer")
+		void OnTankDeath();
 };
