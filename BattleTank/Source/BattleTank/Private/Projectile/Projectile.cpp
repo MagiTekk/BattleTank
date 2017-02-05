@@ -50,7 +50,19 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate(true);
 	ExplosionForce->FireImpulse();
+
+	// Prepare to remove our static mesh
+	SetRootComponent(ImpactBlast);
 	
-	//Cast<UStaticMeshComponent>(OtherActor->GetRootComponent())->AddRadialImpulse(Hit.Location, ExplosionForce->Radius, ExplosionForce->ImpulseStrength, ExplosionForce->Falloff);
+	// Remove the static mesh
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle MyTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(MyTimerHandle, this, &AProjectile::OnTimerFinished, TimeToDieInSecs);
+}
+
+void AProjectile::OnTimerFinished()
+{
+	Destroy();
 }
 

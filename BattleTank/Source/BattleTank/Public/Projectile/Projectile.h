@@ -24,7 +24,10 @@ public:
 
 	void LaunchProjectile(float Speed);
 
-protected:
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float TimeToDieInSecs = 10.0f;
 
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
@@ -42,5 +45,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
 		URadialForceComponent* ExplosionForce = nullptr;
+
+	void OnTimerFinished();
+
+	
 	
 };
