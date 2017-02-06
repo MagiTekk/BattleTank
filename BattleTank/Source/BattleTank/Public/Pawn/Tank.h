@@ -25,12 +25,18 @@ public:
 
 	FTankDelegate OnDeath;
 
-	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
 
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		int32 StartingHealth = 100;
+		int32 AIStartingHealth = 100;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		int32 PlayerStartingHealth = 200;
+
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
+		int32 StartingHealth;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 		int32 CurrentHealth;

@@ -1,6 +1,8 @@
 // Copyright TempleGames GmbH
 
 #include "BattleTank.h"
+#include "AIController/TankAIController.h"
+#include "PlayerController/TankPlayerController.h"
 #include "Tank.h"
 
 // Sets default values
@@ -34,9 +36,23 @@ float ATank::GetHealthPercent() const
 	return static_cast<float>(CurrentHealth) / static_cast<float>(StartingHealth);
 }
 
-void ATank::BeginPlay()
+void ATank::PossessedBy(AController* NewController)
 {
-	Super::BeginPlay();
-	CurrentHealth = StartingHealth;
+	Super::PossessedBy(NewController);
+	if (NewController)
+	{
+		auto AIController = Cast<ATankAIController>(NewController);
+		auto PlayerController = Cast<ATankPlayerController>(NewController);
+
+		if (AIController)
+		{
+			StartingHealth = AIStartingHealth;
+		}
+		else if (PlayerController)
+		{
+			StartingHealth = PlayerStartingHealth;
+		}
+		CurrentHealth = StartingHealth;
+	}
 }
 
