@@ -5,6 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+class AMaterialInstanceActor;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 UCLASS()
@@ -21,7 +23,7 @@ public:
 
 	// Returns CurrentHealth as a percentage of starting health, between 0 and 1
 	UFUNCTION(BlueprintPure, Category = "Health")
-		float GetHealthPercent() const;
+	float GetHealthPercent() const;
 
 	FTankDelegate OnDeath;
 
@@ -30,14 +32,14 @@ public:
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		int32 AIStartingHealth = 100;
+	int32 AIStartingHealth = 100;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		int32 PlayerStartingHealth = 200;
+	int32 PlayerStartingHealth = 200;
 
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
-		int32 StartingHealth;
+	int32 StartingHealth;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-		int32 CurrentHealth;
+	int32 CurrentHealth;
 };
